@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:fake_chat/models/chat.model.dart';
 import 'package:fake_chat/models/message.model.dart';
-import 'package:fake_chat/pages/chat/chat_details.page.dart';
+import 'package:fake_chat/pages/chat/chat_messages.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -61,7 +60,7 @@ class ChatController extends GetxController {
 
   void goToDetailsPage(Chat chat) {
     Get.to(
-      () => ChatDetailPage(
+      () => ChatMessagesPage(
         chat: chat,
       ),
     );

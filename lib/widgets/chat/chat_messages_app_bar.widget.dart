@@ -7,11 +7,11 @@ import 'package:get/get.dart';
 
 const double SIZE = 130;
 
-class ChatDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
+class ChatMessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Uint8List image;
   final String name;
 
-  ChatDetailsAppBar({@required this.image, @required this.name});
+  ChatMessagesAppBar({@required this.image, @required this.name});
 
   @override
   Size get preferredSize => const Size(double.infinity, SIZE);
