@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
@@ -7,12 +8,10 @@ class CustomAvatar extends StatelessWidget {
   CustomAvatar({this.image});
 
   @override
-  Widget build(BuildContext context) => CircleAvatar(
-        radius: 25,
-        child: ClipOval(
-          child: Image.memory(
-            image,
-          ),
+  Widget build(BuildContext context) => ClipOval(
+        child: Image.memory(
+          base64Decode(
+              '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'),
         ),
       );
 }

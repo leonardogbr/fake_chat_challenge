@@ -1,9 +1,11 @@
+import 'package:fake_chat/controllers/chat.controller.dart';
 import 'package:fake_chat/pages/chat/chat_list.page.dart';
 import 'package:fake_chat/theme/app.theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
+  Get.put(ChatController());
   runApp(MyApp());
 }
 

@@ -1,4 +1,6 @@
 import 'package:fake_chat/controllers/chat.controller.dart';
+import 'package:fake_chat/enums/message_direction.enum.dart';
+import 'package:fake_chat/models/ticket_message.model.dart';
 import 'package:fake_chat/widgets/common/app_text_form_field.widget.dart';
 import 'package:fake_chat/widgets/chat/chat_message.widget.dart';
 import 'package:fake_chat/widgets/common/send_button.widget.dart';
@@ -8,7 +10,7 @@ import 'package:fake_chat/widgets/chat/chat_messages_app_bar.widget.dart';
 import 'package:get/get.dart';
 
 class ChatMessagesPage extends StatelessWidget {
-  final controller = Get.put(ChatController());
+  final controller = Get.find<ChatController>();
   final Chat chat;
 
   ChatMessagesPage({@required this.chat});
@@ -17,8 +19,7 @@ class ChatMessagesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ChatMessagesAppBar(
-        image: chat.image,
-        name: chat.name,
+        name: chat.customerIdentity.toString(),
       ),
       body: SafeArea(
         child: Column(
@@ -28,12 +29,18 @@ class ChatMessagesPage extends StatelessWidget {
                 () => ListView.builder(
                   reverse: true,
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  itemCount: controller.chatMessages.length,
+                  itemCount: controller.chatMessages.length + (controller.isComposing.value ? 1 : 0),
                   itemBuilder: (context, index) {
-                    final message = controller.chatMessages[index];
+                    final message = controller.isComposing.value && index == 0
+                        ? TicketMessage(
+                            direction: MessageDirection.received,
+                            content: '',
+                          )
+                        : controller.chatMessages[index - (controller.isComposing.value ? 1 : 0)];
 
                     return ChatMessage(
                       message: message,
+                      isComposing: index == 0 && controller.isComposing.value,
                     );
                   },
                 ),

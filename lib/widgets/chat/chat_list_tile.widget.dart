@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChatListTile extends StatelessWidget {
-  final controller = Get.put(ChatController());
+  final controller = Get.find<ChatController>();
   final Chat chat;
 
   ChatListTile({@required this.chat});
@@ -15,14 +15,12 @@ class ChatListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListTile(
         contentPadding: EdgeInsets.all(20),
-        leading: CustomAvatar(
-          image: chat.image,
-        ),
+        leading: CustomAvatar(),
         title: Text(
-          chat.name,
+          chat.customerIdentity.toString(),
           style: AppTheme.chatListTitleStyle,
         ),
-        trailing: ChatLastMessageTime(message: chat.lastMessage),
+        // trailing: ChatLastMessageTime(message: chat.lastMessage),
         onTap: () {
           /// CAUTION
           /// The Ideal in a real app, which fetches the data from api, would be in the listing, search only the

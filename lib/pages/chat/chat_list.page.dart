@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChatListPage extends StatelessWidget {
-  final controller = Get.put(ChatController());
+  final controller = Get.find<ChatController>();
 
   @override
   Widget build(BuildContext context) {

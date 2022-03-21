@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 const double SIZE = 130;
 
 class ChatListAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final controller = Get.put(ChatController());
+  final controller = Get.find<ChatController>();
 
   @override
   Size get preferredSize => const Size(double.infinity, SIZE);

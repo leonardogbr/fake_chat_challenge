@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:fake_chat/theme/app.theme.dart';
 import 'package:fake_chat/widgets/common/custom_avatar.widget.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +7,9 @@ import 'package:get/get.dart';
 const double SIZE = 130;
 
 class ChatMessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Uint8List image;
   final String name;
 
-  ChatMessagesAppBar({@required this.image, @required this.name});
+  ChatMessagesAppBar({@required this.name});
 
   @override
   Size get preferredSize => const Size(double.infinity, SIZE);
@@ -40,15 +38,22 @@ class ChatMessagesAppBar extends StatelessWidget implements PreferredSizeWidget 
                     onPressed: Get.back,
                   ),
                 ),
-                CustomAvatar(
-                  image: image,
+                // CustomAvatar(
+                //   image: image,
+                // ),
+                Container(
+                  height: 45,
+                  child: CustomAvatar(),
                 ),
                 const SizedBox(
                   width: 10,
                 ),
-                Text(
-                  name,
-                  style: AppTheme.chatDetailsAppBarTitleStyle,
+                Flexible(
+                  child: Text(
+                    name,
+                    style: AppTheme.chatDetailsAppBarTitleStyle,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),

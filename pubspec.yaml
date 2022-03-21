@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   get: ^3.26.0
   intl: ^0.16.1
+  blip_sdk: ^0.0.11
 
 dev_dependencies:
   flutter_test:
