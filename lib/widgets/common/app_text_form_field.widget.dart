@@ -1,6 +1,5 @@
 import 'package:fake_chat/theme/app.theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class AppTextFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -8,6 +7,7 @@ class AppTextFormField extends StatelessWidget {
   final TextInputAction textInputAction;
   final int maxLines;
   final TextCapitalization textCapitalization;
+  final void Function(String) onChanged;
 
   AppTextFormField({
     this.controller,
@@ -15,6 +15,7 @@ class AppTextFormField extends StatelessWidget {
     this.textInputAction,
     this.maxLines,
     this.textCapitalization = TextCapitalization.sentences,
+    this.onChanged,
   });
 
   @override
@@ -44,6 +45,7 @@ class AppTextFormField extends StatelessWidget {
           textCapitalization: textCapitalization,
           textInputAction: textInputAction,
           maxLines: maxLines,
+          onChanged: onChanged,
         ),
       );
 }

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:fake_chat/controllers/chat.controller.dart';
+import 'package:fake_chat/enums/chat_state_types.enum.dart';
 import 'package:fake_chat/enums/message_direction.enum.dart';
 import 'package:fake_chat/models/ticket_message.model.dart';
 import 'package:fake_chat/widgets/common/app_text_form_field.widget.dart';
@@ -62,6 +65,15 @@ class ChatMessagesPage extends StatelessWidget {
                           hint: 'Digite sua mensagem',
                           textInputAction: TextInputAction.newline,
                           maxLines: null,
+                          onChanged: (val) {
+                            if (controller.currentChatState != ChatStateTypes.composing)
+                              controller.sendChatState(chat.id, ChatStateTypes.composing);
+
+                            if (controller.debounce?.isActive ?? false) controller.debounce.cancel();
+                            controller.debounce = Timer(const Duration(seconds: 2), () {
+                              controller.sendChatState(chat.id, ChatStateTypes.paused);
+                            });
+                          },
                         ),
                       ),
                     ),

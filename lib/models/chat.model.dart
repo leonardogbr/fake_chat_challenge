@@ -5,6 +5,7 @@ class Chat {
   Node customerIdentity;
   Node ownerIdentity;
   Node agentIdentity;
+  DateTime openDate;
   // String name;
   // Message lastMessage;
   // List<Message> messages;
@@ -15,6 +16,7 @@ class Chat {
     this.customerIdentity,
     this.ownerIdentity,
     this.agentIdentity,
+    this.openDate,
   });
 
   factory Chat.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class Chat {
       customerIdentity: Node.parse(json['customerIdentity']),
       ownerIdentity: Node.parse(json['ownerIdentity']),
       agentIdentity: Node.parse(json['agentIdentity']),
+      openDate: DateTime.parse(json['openDate']),
       // name: json['name'],
       // lastMessage: Message.fromJson(json['last_message']),
       // messages: _messages,

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:blip_sdk/blip_sdk.dart';
+import 'package:fake_chat/enums/chat_state_types.enum.dart';
 import 'package:fake_chat/enums/message_direction.enum.dart';
 import 'package:fake_chat/models/chat.model.dart';
 import 'package:fake_chat/models/ticket_message.model.dart';
@@ -18,6 +19,8 @@ class ChatController extends GetxController {
   final chatMessages = <TicketMessage>[].obs;
   final isSearching = false.obs;
   final isComposing = false.obs;
+  final isLoading = false.obs;
+  ChatStateTypes currentChatState = ChatStateTypes.paused;
 
   final searchFieldController = TextEditingController();
   final addMessageFieldController = TextEditingController();
@@ -26,6 +29,7 @@ class ChatController extends GetxController {
   final onMessageListener = StreamController<Message>();
   void Function() onRemoveMessageListener;
   String selectedTicketId;
+  Timer debounce;
 
   ChatController()
       : sdkClient = ClientBuilder(transport: WebSocketTransport())
@@ -43,6 +47,12 @@ class ChatController extends GetxController {
   }
 
   @override
+  void dispose() {
+    debounce?.cancel();
+    super.dispose();
+  }
+
+  @override
   void onClose() {
     sessionFinishedHandler.close();
     onMessageListener.close();
@@ -52,6 +62,7 @@ class ChatController extends GetxController {
   }
 
   Future<void> _initController() async {
+    isLoading.value = true;
     await connect();
 
     sdkClient.addSessionFinishedHandlers(sessionFinishedHandler);
@@ -60,7 +71,9 @@ class ChatController extends GetxController {
 
     _initListeners();
 
-    _getTickets();
+    await _getTickets();
+
+    isLoading.value = false;
   }
 
   _initListeners() {
@@ -124,7 +137,7 @@ class ChatController extends GetxController {
     }
 
     list.assignAll(_tempList);
-    // _orderByLastMessage();
+    _orderByOpenDate();
 
     filteredList.assignAll(list);
   }
@@ -141,9 +154,9 @@ class ChatController extends GetxController {
     print('State: ${result?.state?.toString() ?? ''}');
   }
 
-  void _orderByLastMessage({bool applySearch = false}) {
+  void _orderByOpenDate({bool applySearch = false}) {
     // Order by lastMessage desc
-    // list.sort((a, b) => b.lastMessage.createdDate.compareTo(a.lastMessage.createdDate));
+    list.sort((a, b) => b.openDate.compareTo(a.openDate));
 
     // If a new message was created through a filter in the list screen, apply the filter again
     if (applySearch)
@@ -246,6 +259,18 @@ class ChatController extends GetxController {
     //     _orderByLastMessage(applySearch: (searchFieldController.text?.isNotEmpty ?? false));
     //   },
     // );
+  }
+
+  void sendChatState(String id, ChatStateTypes type) {
+    currentChatState = type;
+
+    final message = Message(
+      content: {'state': type.name.substring(0, 1).toUpperCase() + type.name.substring(1)},
+      type: 'application/vnd.lime.chatstate+json',
+      to: Node.parse('$id@desk.msging.net/Lime'),
+    );
+
+    sdkClient.sendMessage(message);
   }
 
   Future<List<TicketMessage>> getChatMessages(String id) async {

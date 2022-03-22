@@ -1,4 +1,3 @@
-import 'package:blip_sdk/blip_sdk.dart';
 import 'package:fake_chat/models/ticket_message.model.dart';
 import 'package:fake_chat/theme/app.theme.dart';
 import 'package:flutter/material.dart';

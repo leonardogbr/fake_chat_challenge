@@ -47,17 +47,17 @@ class ChatMessage extends StatelessWidget {
                           ),
                   ),
                 ),
-                if (!isComposing)
-                  Align(
-                    alignment: alignment,
-                    child: Container(
-                      margin: const EdgeInsets.all(5),
-                      child: Text(
-                        dateFormat.format(DateTime.now()),
-                        style: AppTheme.chatMessageDateStyle,
-                      ),
+                // if (!isComposing)
+                Align(
+                  alignment: alignment,
+                  child: Container(
+                    margin: const EdgeInsets.all(5),
+                    child: Text(
+                      dateFormat.format(message.date ?? DateTime.now().toUtc()),
+                      style: AppTheme.chatMessageDateStyle,
                     ),
                   ),
+                ),
               ],
             ),
           )

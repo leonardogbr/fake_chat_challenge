@@ -14,24 +14,28 @@ class ChatListPage extends StatelessWidget {
       appBar: ChatListAppBar(),
       backgroundColor: Colors.white,
       body: Obx(
-        () => RefreshIndicator(
-          onRefresh: controller.refresh,
-          child: ListView.builder(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-            itemCount: controller.filteredList.length,
-            itemBuilder: (context, index) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ChatListTile(
-                    chat: controller.filteredList[index],
-                  ),
-                  const ChatListTileDivider(),
-                ],
-              );
-            },
-          ),
-        ),
+        () => controller.isLoading.value
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : RefreshIndicator(
+                onRefresh: controller.refresh,
+                child: ListView.builder(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+                  itemCount: controller.filteredList.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ChatListTile(
+                          chat: controller.filteredList[index],
+                        ),
+                        const ChatListTileDivider(),
+                      ],
+                    );
+                  },
+                ),
+              ),
       ),
     );
   }
